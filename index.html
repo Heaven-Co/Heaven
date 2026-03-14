@@ -340,9 +340,9 @@
         .discord-top-button:focus{ box-shadow: 0 0 0 4px rgba(168,85,247,0.06), 0 18px 46px rgba(20,20,20,0.4) }
 
         /* Language switcher */
-        .lang-switch { position: fixed; top: 18px; left: 18px; z-index:10020; display:flex; align-items:center; gap:8px; opacity:0.75; transform:translateY(-6px); transition: all 240ms var(--transition); pointer-events:none }
+        .lang-switch { position: fixed; top: 18px; left: 18px; z-index:10020; display:flex; align-items:center; gap:8px; opacity:1; transform:translateY(-6px); transition: all 240ms var(--transition); pointer-events:none }
         .intro-complete .lang-switch { opacity:1; transform:none; pointer-events:auto }
-        .lang-btn { background: rgba(255,255,255,0.03); color:var(--muted); border: none; padding:8px 12px; border-radius:10px; cursor:pointer; font-weight:600 }
+        .lang-btn { background: rgba(168, 85, 247, 0.6); color:var(--muted); border: 1px solid rgba(168, 85, 247, 0.5); padding:8px 12px; border-radius:10px; cursor:pointer; font-weight:600 }
         .lang-btn:hover { transform: translateY(-2px) }
         .lang-menu { display:none; position:absolute; top:44px; left:0; background: rgba(10,10,10,0.98); border:1px solid rgba(255,255,255,0.04); padding:8px; border-radius:10px; box-shadow: 0 14px 40px rgba(0,0,0,0.6) }
         .lang-menu button { display:block; background:transparent; color:#fff; border:none; padding:8px 12px; text-align:left; width:100%; cursor:pointer }
@@ -647,6 +647,105 @@
             font-weight: 500;
         }
 
+        /* Close and Show Buttons */
+        .music-close-btn {
+            position: absolute;
+            top: 10px;
+            right: 10px;
+            background: rgba(168, 85, 247, 0.3);
+            border: none;
+            color: #a855f7;
+            width: 28px;
+            height: 28px;
+            border-radius: 50%;
+            cursor: pointer;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 1.2rem;
+            transition: all 0.3s ease;
+            padding: 0;
+        }
+
+        .music-close-btn:hover {
+            background: rgba(168, 85, 247, 0.6);
+            transform: scale(1.1);
+        }
+
+        .music-show-btn {
+            position: fixed;
+            bottom: 30px;
+            right: 30px;
+            z-index: 10100;
+            background: linear-gradient(135deg, #a855f7, #9333ea);
+            border: none;
+            color: #fff;
+            width: 50px;
+            height: 50px;
+            border-radius: 15px;
+            cursor: pointer;
+            display: none;
+            align-items: center;
+            justify-content: center;
+            font-size: 1.5rem;
+            transition: all 0.3s ease;
+            box-shadow: 0 10px 30px rgba(168, 85, 247, 0.3);
+            opacity: 0;
+            transform: translateY(20px);
+            pointer-events: none;
+        }
+
+        body.intro-complete .music-show-btn {
+            opacity: 1;
+            transform: translateY(0);
+            pointer-events: auto;
+        }
+
+        .music-show-btn:hover {
+            transform: translateY(-3px);
+            box-shadow: 0 15px 40px rgba(168, 85, 247, 0.5);
+            background: linear-gradient(135deg, #9333ea, #a855f7);
+        }
+
+        .music-player-box.hidden {
+            display: none !important;
+        }
+
+        .music-show-btn {
+            position: fixed;
+            bottom: 30px;
+            right: 30px;
+            z-index: 10100;
+            background: linear-gradient(135deg, #a855f7, #9333ea);
+            border: none;
+            color: #fff;
+            width: 50px;
+            height: 50px;
+            border-radius: 15px;
+            cursor: pointer;
+            align-items: center;
+            justify-content: center;
+            font-size: 1.5rem;
+            transition: all 0.3s ease;
+            box-shadow: 0 10px 30px rgba(168, 85, 247, 0.3);
+            opacity: 0;
+            transform: translateY(20px);
+            pointer-events: none;
+            display: none;
+        }
+
+        body.intro-complete .music-show-btn {
+            opacity: 1;
+            transform: translateY(0);
+            pointer-events: auto;
+        }
+
+        .music-player-box.hidden ~ .music-show-btn {
+            display: flex;
+            opacity: 1;
+            pointer-events: auto;
+        }
+
         @media (max-width: 480px) {
             .music-player-box {
                 bottom: 20px;
@@ -686,6 +785,7 @@
 
     <!-- Music Player Box -->
     <div class="music-player-box" id="musicPlayer">
+        <button class="music-close-btn" onclick="hideMusicPlayer()" title="Hide player">✕</button>
         <div class="music-header">
             <div>
                 <div class="music-title-box">🎵 Playlist</div>
@@ -719,6 +819,9 @@
     <audio id="audioPlayer">
         <source src="LoFi.mp3" type="audio/mpeg">
     </audio>
+
+    <!-- Music Show Button -->
+    <button class="music-show-btn" onclick="showMusicPlayer()" title="Show player">◄</button>
 
     <!-- Language switcher (appears after intro) -->
     <div class="lang-switch" aria-hidden="true">
@@ -1118,6 +1221,25 @@
         audioPlayer.addEventListener('ended', function() {
             nextSong();
         });
+
+        // Hide/Show Music Player Functions
+        function hideMusicPlayer() {
+            const player = document.getElementById('musicPlayer');
+            const showBtn = document.querySelector('.music-show-btn');
+            player.classList.add('hidden');
+            showBtn.style.display = 'flex';
+            showBtn.style.opacity = '1';
+            showBtn.style.pointerEvents = 'auto';
+        }
+
+        function showMusicPlayer() {
+            const player = document.getElementById('musicPlayer');
+            const showBtn = document.querySelector('.music-show-btn');
+            player.classList.remove('hidden');
+            showBtn.style.display = 'none';
+            showBtn.style.opacity = '0';
+            showBtn.style.pointerEvents = 'none';
+        }
     </script>
 </body>
 </html>
