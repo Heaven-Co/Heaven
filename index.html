@@ -363,12 +363,12 @@
         .social-btn {
             width: 64px;
             height: 64px;
-            display: flex;
+            display: inline-flex;
             align-items: center;
             justify-content: center;
             border-radius: 14px;
             cursor: pointer;
-            transition: all 0.3s ease;
+            transition: transform 0.18s var(--transition), box-shadow 0.18s var(--transition);
             box-shadow: 0 10px 30px rgba(0,0,0,0.6);
             padding: 6px;
             border: none;
@@ -385,6 +385,10 @@
         .social-btn:hover {
             transform: translateY(-4px) scale(1.03);
             box-shadow: 0 18px 46px rgba(20,20,20,0.5);
+        }
+
+        .social-btn:focus {
+            box-shadow: 0 0 0 4px rgba(168,85,247,0.06), 0 18px 46px rgba(20,20,20,0.4);
         }
 
         /* Kick Button */
@@ -897,7 +901,7 @@
         <select class="music-select" id="songSelect" onchange="changeSong()">
             <option value="LoFi.mp3">LoFi - Chill Beats</option>
             <option value="GB.mp3">Golden Brown - Smooth Jazz</option>
-            <option value="DC.mp3">Dorian Concept - Ambient</option>
+            <option value="DC.mp3">Love Story - Ambient</option>
         </select>
 
         <div class="music-controls">
@@ -1242,7 +1246,7 @@
         const songs = [
             { file: 'LoFi.mp3', name: 'LoFi' },
             { file: 'GB.mp3', name: 'Golden Brown' },
-            { file: 'DC.mp3', name: 'Dorian Concept' }
+            { file: 'DC.mp3', name: 'Love Story' }
         ];
 
         let currentSongIndex = 0;
